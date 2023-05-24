@@ -14,6 +14,7 @@ module.exports = {
   rules: {
     'react-refresh/only-export-components': 'warn',
     'react/jsx-no-target-blank': 'off',
+    'no-unused-vars': 'warn',
     'jsx-quotes': ["error", "prefer-double"]
   },
 }

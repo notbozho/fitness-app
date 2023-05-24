@@ -23,4 +23,6 @@ dist-ssr
 *.sln
 *.sw?
 
+# Pocket base
 pocketbase.exe
+pb_data
