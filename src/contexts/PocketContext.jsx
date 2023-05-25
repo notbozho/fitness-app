@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import {
   createContext,
   useContext,
@@ -10,6 +11,9 @@ import PocketBase from 'pocketbase'
 import { useInterval } from 'usehooks-ts'
 import jwtDecode from 'jwt-decode'
 import ms from 'ms'
+
+import DEFAULT_AVATAR_MAN from '../assets/default_avatar_man.jpg'
+import DEFAULT_AVATAR_WOMAN from '../assets/default_avatar_woman.jpg'
 
 const BASE_URL = 'http://127.0.0.1:8090'
 const fiveMinutesInMs = ms('5 minutes')
@@ -43,6 +47,8 @@ export const PocketProvider = ({ children }) => {
 
   const logout = useCallback(() => {
     pb.authStore.clear()
+    setToken(null)
+    setUser(null)
   }, [])
 
   const refreshSession = useCallback(async () => {
@@ -55,11 +61,34 @@ export const PocketProvider = ({ children }) => {
     }
   }, [token])
 
+  const getAvatar = useCallback(async () => {
+    if (!user?.avatar)
+      return user.gender == 'male' ? DEFAULT_AVATAR_MAN : DEFAULT_AVATAR_WOMAN
+    return await pb.files.getUrl(user, user.avatar, { thumb: '300x300' })
+  }, [])
+
+  const getImage = useCallback(async (image) => {
+    return await pb.files.getUrl(user, image, { thumb: '300x300' })
+  }, [])
+
+  const getAllExercises = useCallback(async () => {
+    return await pb.collection('exercises').getFullList()
+  }, [])
+
   useInterval(refreshSession, token ? twoMinutesInMs : null)
 
   return (
     <PocketContext.Provider
-      value={{ register, login, logout, user, token, pb }}
+      value={{
+        register,
+        login,
+        logout,
+        getAvatar,
+        getAllExercises,
+        user,
+        token,
+        pb
+      }}
     >
       {children}
     </PocketContext.Provider>
