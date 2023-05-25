@@ -1,0 +1,34 @@
+.pagenotfound-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100vw;
+  height: 100vh;
+}
+
+.pagenotfound-container h1 {
+  color: #f05454;
+  font-weight: 900;
+  font-size: 90px;
+}
+
+.pagenotfound-container p {
+  font-size: 20px;
+}
+
+.home {
+  background-color: #f05454;
+  text-decoration: none;
+  color: white;
+  padding: 20px 40px 20px 40px;
+  margin-top: 25px;
+  border-radius: 10px;
+}
+
+.pagenotfound-container img {
+  width: 100%;
+  max-width: 400px;
+  border: #f05454 solid 3px;
+  margin-bottom: 20px;
+}

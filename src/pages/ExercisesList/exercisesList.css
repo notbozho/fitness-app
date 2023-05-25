@@ -1,29 +1,32 @@
-.table-container {
-  width: 100%;
+.exercises-page {
+  background-color: #f5f5f5;
+  height: 100vh;
+}
+
+.exercise-container {
+  position: absolute;
+  top: 50%;
+  width: 100vw;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  background-color: white;
+  padding: 50px;
+  border-radius: 32px 32px 0px 0px;
+}
+
+.exercise-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 23%;
   margin-bottom: 20px;
+  border: 1px solid black;
 }
 
-.table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 14px;
-}
-
-.table th,
-.table td {
-  padding: 8px;
-  text-align: left;
-  border-bottom: 1px solid #ccc;
-}
-
-.table th {
-  background-color: #f2f2f2;
-}
-
-.table tbody tr:nth-child(even) {
-  background-color: #f9f9f9;
-}
-
-.table tbody tr:hover {
-  background-color: #eaf6fd;
+@media (max-aspect-ratio: 16/9) {
+  .exercise-card {
+    width: 48%;
+  }
 }

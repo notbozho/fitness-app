@@ -16,6 +16,7 @@ import DEFAULT_AVATAR_MAN from '../assets/default_avatar_man.jpg'
 import DEFAULT_AVATAR_WOMAN from '../assets/default_avatar_woman.jpg'
 
 const BASE_URL = 'http://127.0.0.1:8090'
+const API_URL = BASE_URL + '/api'
 const fiveMinutesInMs = ms('5 minutes')
 const twoMinutesInMs = ms('2 minutes')
 
@@ -27,6 +28,8 @@ export const PocketProvider = ({ children }) => {
 
   const [token, setToken] = useState(pb.authStore.token)
   const [user, setUser] = useState(pb.authStore.model)
+  const [exercises, setExercises] = useState([])
+  const [workouts, setWorkouts] = useState([])
 
   useEffect(() => {
     return pb.authStore.onChange((token, model) => {
@@ -67,12 +70,21 @@ export const PocketProvider = ({ children }) => {
     return await pb.files.getUrl(user, user.avatar, { thumb: '300x300' })
   }, [])
 
-  const getImage = useCallback(async (image) => {
-    return await pb.files.getUrl(user, image, { thumb: '300x300' })
+  const getImageUrl = useCallback(async (entity, image, thumb) => {
+    return await pb.files.getUrl(entity, image, { thumb: thumb || '300x300' })
   }, [])
 
-  const getAllExercises = useCallback(async () => {
-    return await pb.collection('exercises').getFullList()
+  const loadAllExercises = useCallback(async () => {
+    const exs = await pb.collection('exercises').getFullList()
+    setExercises(exs)
+  }, [])
+
+  const loadTemplate = useCallback(async (template) => {
+    const exs = await pb
+      .collection('workouts')
+      .getFullList({ sort: 'orderWeight', filter: `template = "${template}"` })
+
+    setWorkouts(exs)
   }, [])
 
   useInterval(refreshSession, token ? twoMinutesInMs : null)
@@ -84,10 +96,15 @@ export const PocketProvider = ({ children }) => {
         login,
         logout,
         getAvatar,
-        getAllExercises,
+        loadAllExercises,
+        loadTemplate,
+        getImageUrl,
         user,
         token,
-        pb
+        exercises,
+        workouts,
+        pb,
+        API_URL
       }}
     >
       {children}
