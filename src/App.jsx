@@ -1,5 +1,6 @@
 import React from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { ToastContainer, Slide } from 'react-toastify'
 import { RequireAuth } from './components/RequireAuth'
 import WorkoutWrapper from './components/WorkoutWrapper'
 
@@ -10,17 +11,24 @@ import Login from './pages/Login'
 import PageNotFound from './pages/PageNotFound'
 import Profile from './pages/Profile'
 import SignUp from './pages/SignUp'
-import Workout from './pages/Workout'
+
+import 'react-toastify/dist/ReactToastify.css'
+import NavBar from './components/NavBar'
 
 export default function App() {
   return (
     <PocketProvider>
+      <NavBar />
+      <ToastContainer
+        autoClose={4000}
+        theme={'colored'}
+        pauseOnFocusLoss={false}
+        transition={Slide}
+      />
       <BrowserRouter>
         <Routes>
           <Route index element={<SignUp />} />
           <Route path="/login" element={<Login />} />
-          {/* @todo tuka trqq da iska login */}
-          <Route path="/ex" element={<ExercisesList />} />
           <Route element={<RequireAuth />}>
             <Route path="/home" element={<Homepage />} />
             <Route path="/workout/:workout" element={<WorkoutWrapper />} />

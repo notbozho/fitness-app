@@ -4,8 +4,9 @@ import './Workout.css'
 
 import GATTO from '../../assets/gatto.jpg'
 import { usePocket } from '../../contexts/PocketContext'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { isSameDay } from '../../Util'
+import { toast } from 'react-toastify'
 
 export default function Workout() {
   const [selectedIndex, setSelectedIndex] = React.useState(0)
@@ -13,7 +14,7 @@ export default function Workout() {
 
   const { workout } = useParams()
   const navigate = useNavigate()
-  //@todo order weight ne se prai pravilno
+
   const {
     exercises,
     completedWorkouts,
@@ -21,6 +22,7 @@ export default function Workout() {
     loadAllExercises,
     loadTemplate,
     finishTodayWorkout,
+    loadCompletedWorkouts,
     API_URL
   } = usePocket()
 
@@ -28,6 +30,7 @@ export default function Workout() {
     async function load() {
       await loadAllExercises()
       await loadTemplate(workout)
+      await loadCompletedWorkouts()
     }
 
     load()
@@ -36,21 +39,38 @@ export default function Workout() {
   useEffect(() => {
     if (workouts.length == 0 || exercises.length == 0) return
 
-    const filtered = exercises.filter((exercise) => {
-      return workouts.some((workout) => {
-        return workout.exercise === exercise.id
+    const filtered = exercises
+      .filter((exercise) =>
+        workouts.some((workout) => workout.exercise === exercise.id)
+      )
+      .sort((a, b) => {
+        const aWorkout = workouts.find((workout) => workout.exercise === a.id)
+        const bWorkout = workouts.find((workout) => workout.exercise === b.id)
+
+        return aWorkout.orderWeight - bWorkout.orderWeight
       })
-    })
 
     setFilteredExercises(filtered)
-
-    console.log(filtered)
   }, [workouts])
 
   const handleFinishWorkout = async () => {
     const today = new Date()
-    if (!completedWorkouts.some((work) => isSameDay(work.date, today))) {
-      finishTodayWorkout(workout)
+
+    // proveri dali e pravil tazi trenirovka dnes
+    if (
+      !completedWorkouts.some((completedWorkout) => {
+        const completedDate = new Date(completedWorkout.date)
+
+        return (
+          completedWorkout.workout === workout &&
+          isSameDay(today, completedDate)
+        )
+      })
+    ) {
+      await finishTodayWorkout(workout)
+      toast.success('Workout logged!')
+    } else {
+      toast.error('You already have done this workout today!')
     }
 
     await navigate('/home')

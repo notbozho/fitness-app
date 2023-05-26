@@ -12,9 +12,6 @@ import { useInterval } from 'usehooks-ts'
 import jwtDecode from 'jwt-decode'
 import ms from 'ms'
 
-import DEFAULT_AVATAR_MAN from '../assets/default_avatar_man.jpg'
-import DEFAULT_AVATAR_WOMAN from '../assets/default_avatar_woman.jpg'
-
 const BASE_URL = 'http://127.0.0.1:8090'
 const API_URL = BASE_URL + '/api'
 const fiveMinutesInMs = ms('5 minutes')
@@ -41,6 +38,8 @@ export const PocketProvider = ({ children }) => {
   }
 
   const finishTodayWorkout = async (workout) => {
+    if (!user) return
+
     const data = {
       user: user.id,
       workout: workout,
@@ -59,10 +58,15 @@ export const PocketProvider = ({ children }) => {
     })
   }, [])
 
-  const register = useCallback(async (email, password) => {
+  const reloadUserData = useCallback(async () => {
+    const u = await pb.collection('users').getOne(user.id)
+    setUser(u)
+  }, [user])
+
+  const register = useCallback(async (email, password, username) => {
     return await pb
       .collection('users')
-      .create({ email, password, passwordConfirm: password })
+      .create({ username, email, password, passwordConfirm: password })
   }, [])
 
   const login = useCallback(async (email, password) => {
@@ -86,12 +90,6 @@ export const PocketProvider = ({ children }) => {
     }
   }, [token])
 
-  const getAvatar = useCallback(async () => {
-    if (!user?.avatar)
-      return user.gender == 'male' ? DEFAULT_AVATAR_MAN : DEFAULT_AVATAR_WOMAN
-    return await pb.files.getUrl(user, user.avatar, { thumb: '300x300' })
-  }, [])
-
   const getImageUrl = useCallback(async (entity, image, thumb) => {
     return await pb.files.getUrl(entity, image, { thumb: thumb || '300x300' })
   }, [])
@@ -106,11 +104,6 @@ export const PocketProvider = ({ children }) => {
       .collection('workouts')
       .getFullList({ sort: 'orderWeight', filter: `template = "${template}"` })
 
-    // sort by orderWeight
-
-    exs = exs.sort((a, b) => a.orderWeight - b.orderWeight)
-
-    console.log(exs)
     setWorkouts(exs)
   }, [])
 
@@ -122,11 +115,12 @@ export const PocketProvider = ({ children }) => {
         register,
         login,
         logout,
-        getAvatar,
         loadAllExercises,
         loadTemplate,
         getImageUrl,
         finishTodayWorkout,
+        loadCompletedWorkouts,
+        reloadUserData,
         user,
         token,
         exercises,

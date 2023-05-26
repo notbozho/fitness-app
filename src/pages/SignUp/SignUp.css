@@ -1,4 +1,4 @@
-.login-page {
+.signup-page {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -7,7 +7,7 @@
   background-color: #f5f5f5;
 }
 
-.login-container {
+.signup-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -20,11 +20,11 @@
   padding: 20px;
 }
 
-.login-container h1 {
+.signup-container h1 {
   font-size: 30px;
   margin-bottom: 30px;
 }
-.login-container input {
+.signup-container input {
   width: 80%;
   height: 40px;
   border: 1px solid #ddd;
@@ -32,23 +32,23 @@
   margin-bottom: 10px;
 }
 
-.login-container input::placeholder {
+.signup-container input::placeholder {
   color: #999;
   font-weight: 300;
 }
 
-.login-container input {
+.signup-container input {
   color: #f05454;
   padding-left: 25px;
   font-weight: 500;
   font-size: 0.8em;
 }
 
-.login-container input:active {
+.signup-container input:active {
   border: 1px solid #f05454;
 }
 
-.login-container button {
+.signup-container button {
   font-size: 16px;
   height: 40px;
   color: white;
@@ -63,20 +63,20 @@
   cursor: pointer;
   width: 90%;
 }
-.login-container button:hover {
+.signup-container button:hover {
   opacity: 0.8;
 }
 
-.login-container .link {
+.signup-container .link {
   margin-top: 10px;
 }
 
-.login-container .link a {
+.signup-container .link a {
   /* text-decoration: none; */
   color: #f05454;
   font-size: 14px;
 }
 
-.login-container .link a:hover {
+.signup-container .link a:hover {
   color: #666;
 }

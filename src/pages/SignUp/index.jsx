@@ -1,32 +1,81 @@
-import React, { useCallback, useRef } from 'react'
+import React, { useState, useCallback, useEffect, useRef } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 
 import { usePocket } from '../../contexts/PocketContext'
 
+import { toast } from 'react-toastify'
+
+import './SignUp.css'
+
 export default function SignUp() {
   const emailRef = useRef()
+  const usernameRef = useRef()
   const passwordRef = useRef()
-  const { register } = usePocket()
+  const confirmPasswordRef = useRef()
+  const { register, user } = usePocket()
   const navigate = useNavigate()
 
   const handleOnSubmit = useCallback(
     async (evt) => {
       evt?.preventDefault()
-      await register(emailRef.current.value, passwordRef.current.value)
-      navigate('/login')
+
+      if (passwordRef.current.value !== confirmPasswordRef.current.value) {
+        toast.error('Passwords do not match')
+        return
+      }
+
+      if (usernameRef.current.value === '') {
+        toast.error('Username cannot be empty')
+        return
+      }
+
+      if (passwordRef.current.value.length < 8) {
+        toast.error('Password must be at least 8 characters long')
+        return
+      }
+
+      try {
+        await register(
+          emailRef.current.value,
+          passwordRef.current.value,
+          usernameRef.current.value
+        )
+        toast.success('Successfully registered')
+        navigate('/login')
+      } catch (err) {
+        toast.error(err.message)
+      }
     },
-    [register]
+    [register] // Only include the dependencies that are necessary
   )
 
+  useEffect(() => {
+    if (!user) return
+
+    navigate('/home')
+  }, [])
+
   return (
-    <section>
-      <h2>Sign Up</h2>
-      <form onSubmit={handleOnSubmit}>
-        <input placeholder="Email" type="email" ref={emailRef} />
-        <input placeholder="Password" type="password" ref={passwordRef} />
-        <button type="submit">Create</button>
-        <Link to="/Login">Go to Login</Link>
-      </form>
-    </section>
+    <div className="signup-page">
+      <div className="signup-container">
+        <h1>Sign Up</h1>
+        <form onSubmit={handleOnSubmit}>
+          <input placeholder="Email" type="email" ref={emailRef} />
+
+          <input placeholder="Password" type="password" ref={passwordRef} />
+          <input placeholder="Username" type="text" ref={usernameRef} />
+          {/* @todo gender s elect */}
+          <input
+            placeholder="Confirm Password"
+            type="password"
+            ref={confirmPasswordRef}
+          />
+          <button type="submit">Register</button>
+          <div className="link">
+            <Link to="/Login">Go to Login</Link>
+          </div>
+        </form>
+      </div>
+    </div>
   )
 }

@@ -5,6 +5,9 @@ export default function Profile() {
   const { logout, user } = usePocket()
 
   return (
+    // @todo edit profile
+    // - change username
+    // - change profile picture
     <section>
       <h2>Profile</h2>
       <pre>
