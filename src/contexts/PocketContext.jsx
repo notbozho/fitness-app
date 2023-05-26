@@ -30,11 +30,32 @@ export const PocketProvider = ({ children }) => {
   const [user, setUser] = useState(pb.authStore.model)
   const [exercises, setExercises] = useState([])
   const [workouts, setWorkouts] = useState([])
+  const [completedWorkouts, setCompletedWorkouts] = useState([])
+
+  const loadCompletedWorkouts = async () => {
+    const workouts = await pb
+      .collection('completedWorkouts')
+      .getFullList({ filter: `user = "${user.id}"` })
+
+    setCompletedWorkouts(workouts)
+  }
+
+  const finishTodayWorkout = async (workout) => {
+    const data = {
+      user: user.id,
+      workout: workout,
+      date: new Date()
+    }
+
+    await pb.collection('completedWorkouts').create(data)
+    await loadCompletedWorkouts()
+  }
 
   useEffect(() => {
     return pb.authStore.onChange((token, model) => {
       setToken(token)
       setUser(model)
+      loadCompletedWorkouts()
     })
   }, [])
 
@@ -52,6 +73,7 @@ export const PocketProvider = ({ children }) => {
     pb.authStore.clear()
     setToken(null)
     setUser(null)
+    setCompletedWorkouts([])
   }, [])
 
   const refreshSession = useCallback(async () => {
@@ -80,10 +102,15 @@ export const PocketProvider = ({ children }) => {
   }, [])
 
   const loadTemplate = useCallback(async (template) => {
-    const exs = await pb
+    let exs = await pb
       .collection('workouts')
       .getFullList({ sort: 'orderWeight', filter: `template = "${template}"` })
 
+    // sort by orderWeight
+
+    exs = exs.sort((a, b) => a.orderWeight - b.orderWeight)
+
+    console.log(exs)
     setWorkouts(exs)
   }, [])
 
@@ -99,10 +126,12 @@ export const PocketProvider = ({ children }) => {
         loadAllExercises,
         loadTemplate,
         getImageUrl,
+        finishTodayWorkout,
         user,
         token,
         exercises,
         workouts,
+        completedWorkouts,
         pb,
         API_URL
       }}

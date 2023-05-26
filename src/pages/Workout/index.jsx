@@ -4,16 +4,25 @@ import './Workout.css'
 
 import GATTO from '../../assets/gatto.jpg'
 import { usePocket } from '../../contexts/PocketContext'
-import { useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
+import { isSameDay } from '../../Util'
 
 export default function Workout() {
   const [selectedIndex, setSelectedIndex] = React.useState(0)
   const [filteredExercises, setFilteredExercises] = React.useState([])
 
   const { workout } = useParams()
-
-  const { exercises, workouts, loadAllExercises, loadTemplate, API_URL } =
-    usePocket()
+  const navigate = useNavigate()
+  //@todo order weight ne se prai pravilno
+  const {
+    exercises,
+    completedWorkouts,
+    workouts,
+    loadAllExercises,
+    loadTemplate,
+    finishTodayWorkout,
+    API_URL
+  } = usePocket()
 
   useEffect(() => {
     async function load() {
@@ -34,11 +43,27 @@ export default function Workout() {
     })
 
     setFilteredExercises(filtered)
+
+    console.log(filtered)
   }, [workouts])
+
+  const handleFinishWorkout = async () => {
+    const today = new Date()
+    if (!completedWorkouts.some((work) => isSameDay(work.date, today))) {
+      finishTodayWorkout(workout)
+    }
+
+    await navigate('/home')
+  }
 
   return (
     <div className="workout-page">
-      <h1 className="title">{workout} day</h1>
+      <div className="top-container">
+        <h1 className="title">{workout} day</h1>
+        <button className="finish-workout" onClick={handleFinishWorkout}>
+          Finish workout
+        </button>
+      </div>
       <div className="workout-container">
         <div
           className="exercises-list"

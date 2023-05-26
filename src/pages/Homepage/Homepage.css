@@ -41,3 +41,31 @@
   border: #f05454 solid 3px;
   margin: 20px;
 }
+
+.calendar-day {
+  position: relative;
+}
+
+.check-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #f05454;
+  font-size: 22px;
+  font-weight: 900;
+}
+
+.react-calendar {
+  border-radius: 12px;
+  border: 1px #f05454 solid !important;
+}
+
+.react-calendar__tile--active,
+.react-calendar__tile--now,
+.react-calendar__tile:enabled:hover,
+.react-calendar__month-view__days__day--weekend,
+.react-calendar__tile:enabled:focus {
+  background-color: white !important;
+  color: black !important;
+}

@@ -19,10 +19,11 @@ export default function App() {
         <Routes>
           <Route index element={<SignUp />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/workout/:workout" element={<WorkoutWrapper />} />
+          {/* @todo tuka trqq da iska login */}
           <Route path="/ex" element={<ExercisesList />} />
-          <Route path="/home" element={<Homepage />} />
           <Route element={<RequireAuth />}>
+            <Route path="/home" element={<Homepage />} />
+            <Route path="/workout/:workout" element={<WorkoutWrapper />} />
             <Route path="/profile" element={<Profile />} />
           </Route>
           <Route path="*" element={<PageNotFound />} />
