@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from 'react'
+import { useRef, useCallback } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 
 import { usePocket } from '../../contexts/PocketContext'
@@ -12,24 +12,18 @@ export default function Login() {
   const { login } = usePocket()
   const navigate = useNavigate()
 
-  const [error, setError] = useState(false)
-
   const handleOnSubmit = useCallback(
     async (evt) => {
       evt?.preventDefault()
-      await login(emailRef.current.value, passwordRef.current.value).catch(
-        (err) => {
-          setError(true)
-          toast.error(err)
-        }
-      )
-
-      if (!error) {
+      try {
+        await login(emailRef.current.value, passwordRef.current.value)
         toast.success('Successfully logged in')
         navigate('/profile')
+      } catch (err) {
+        toast.error(err.message)
       }
     },
-    [login, navigate, error]
+    [login, navigate]
   )
 
   return (
@@ -37,7 +31,6 @@ export default function Login() {
       <div className="login-container">
         <h1>Login</h1>
         <form onSubmit={handleOnSubmit}>
-          {error != null && <p style={{ backgroundColor: 'red' }}>{error}</p>}
           <input placeholder="Email" type="email" ref={emailRef} />
           <input placeholder="Password" type="password" ref={passwordRef} />
           <button type="submit">Login</button>

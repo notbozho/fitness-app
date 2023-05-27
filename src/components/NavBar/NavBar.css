@@ -11,8 +11,8 @@
   text-decoration: none;
 }
 
-.navbar a:hover {
-  opacity: 0.7;
+.navbar .logo:hover {
+  opacity: 0.6;
 }
 
 .navbar-left {
@@ -23,6 +23,12 @@
 .logo {
   color: red;
   font-size: 20px;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.login,
+.register {
   font-weight: bold;
   margin-right: 10px;
 }
@@ -44,8 +50,9 @@
   cursor: pointer;
 }
 
-.navbar-right:hover {
-  opacity: 0.7;
+.navbar-right .username:hover,
+.navbar-right .avatar:hover {
+  opacity: 0.6;
 }
 
 .avatar {

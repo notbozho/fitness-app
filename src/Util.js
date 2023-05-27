@@ -1,7 +1,7 @@
 export const calculateBMI = (weight, height) => {
   let heightInMeters = height / 100
 
-  const value = (weight / (heightInMeters * heightInMeters)).toFixed(2)
+  const value = (weight / (heightInMeters * heightInMeters)).toFixed(0)
 
   return value != 'NaN' ? value : 0
 }

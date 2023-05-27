@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { usePocket } from '../../contexts/PocketContext'
 
 import DEFAULT_MALE from '../../assets/default_avatar_man.jpg'
@@ -12,14 +12,8 @@ import { calculateBMI } from '../../Util'
 import { useNavigate } from 'react-router-dom'
 
 export default function Profile() {
-  const {
-    logout,
-    user,
-    loadCompletedWorkouts,
-    API_URL,
-    reloadUserData,
-    completedWorkouts
-  } = usePocket()
+  const { logout, user, loadCompletedWorkouts, API_URL, reloadUserData } =
+    usePocket()
 
   const navigate = useNavigate()
 

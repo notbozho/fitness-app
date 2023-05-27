@@ -1,0 +1,86 @@
+.editprofile-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  height: 100vh;
+  background-color: #f5f5f5;
+}
+
+.editprofile-page .profile-container {
+  min-height: 600px;
+}
+
+.editprofile-page .general-container {
+  position: relative;
+}
+
+.editprofile-page .avatar {
+  border: #f05454 1px solid;
+}
+
+.editprofile-page .pen .icon {
+  position: absolute;
+  top: 60px;
+  right: 30px;
+  width: 20px;
+  height: 20px;
+}
+
+.inputTitle {
+  margin-top: 10px;
+  margin-bottom: -5px !important;
+}
+
+.editprofile-page .pen .avatar:hover {
+  opacity: 0.8;
+}
+
+.editprofile-page .general-container input {
+  margin: 10px 0 0px 0;
+  padding: 5px 0px 5px 10px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 12px;
+  border: #f05454 1px solid;
+  color: #f05454;
+}
+
+.editprofile-page .general-container input:focus {
+  outline: none;
+  border: 2px solid #f05454;
+}
+
+.editprofile-page .metric {
+  padding: 15px 15px 15px 15px;
+  max-width: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.editprofile-page .metric input {
+  max-width: 35%;
+  margin-top: 5px;
+  border-radius: 12px;
+  padding: 2px 5px 2px 5px;
+  border: solid 1px #f05454;
+}
+
+.editprofile-page .metric input:focus {
+  outline: none;
+  border: 2px solid #f05454;
+}
+
+.editprofile-page .metric p {
+  /* max-width: 30%; */
+  margin-left: 5px;
+  margin-top: 5px;
+}
+
+.editprofile-page .metric h3 {
+  width: 80%;
+}

@@ -106,9 +106,12 @@ export default function Workout() {
             >
               <h1>{index + 1}</h1>
               <h2>{exercise.name}</h2>
-              <p className="repetitions">
-                <span>{workouts[index].sets}x</span> {workouts[index].reps} reps
-              </p>
+              {workouts.length > 0 && (
+                <p className="repetitions">
+                  <span>{workouts[index].sets}x</span> {workouts[index].reps}{' '}
+                  reps
+                </p>
+              )}
             </div>
           ))}
         </div>

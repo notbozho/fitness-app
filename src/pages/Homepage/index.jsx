@@ -5,7 +5,6 @@ import Calendar from 'react-calendar'
 import { isSameDay, readbleDate } from '../../Util'
 import { useEffect, useState } from 'react'
 
-import GATTO from '../../assets/gatto.jpg'
 import PUSH from '../../assets/push.jpeg'
 import PULL from '../../assets/pull.jpg'
 import LEGS from '../../assets/legs.jpg'
@@ -32,7 +31,11 @@ export default function Homepage() {
 
   const tileContent = ({ date }) => {
     if (dates.some((markedDate) => isSameDay(date, markedDate))) {
-      return <span className="check-icon">&#10004;</span>
+      return (
+        <span className="check-icon" key={date}>
+          &#10004;
+        </span>
+      )
     }
     return null
   }

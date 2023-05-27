@@ -5,7 +5,6 @@ import { RequireAuth } from './components/RequireAuth'
 import WorkoutWrapper from './components/WorkoutWrapper'
 
 import { PocketProvider } from './contexts/PocketContext'
-import ExercisesList from './pages/ExercisesList'
 import Homepage from './pages/Homepage'
 import Login from './pages/Login'
 import PageNotFound from './pages/PageNotFound'
@@ -14,6 +13,7 @@ import SignUp from './pages/SignUp'
 
 import 'react-toastify/dist/ReactToastify.css'
 import NavBar from './components/NavBar'
+import EditProfile from './pages/EditProfile'
 
 export default function App() {
   return (
@@ -33,6 +33,7 @@ export default function App() {
             <Route path="/home" element={<Homepage />} />
             <Route path="/workout/:workout" element={<WorkoutWrapper />} />
             <Route path="/profile" element={<Profile />} />
+            <Route path="/editprofile" element={<EditProfile />} />
           </Route>
           <Route path="*" element={<PageNotFound />} />
         </Routes>

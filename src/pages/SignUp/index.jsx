@@ -58,13 +58,12 @@ export default function SignUp() {
   return (
     <div className="signup-page">
       <div className="signup-container">
-        <h1>Sign Up</h1>
+        <h1>Register</h1>
         <form onSubmit={handleOnSubmit}>
           <input placeholder="Email" type="email" ref={emailRef} />
 
-          <input placeholder="Password" type="password" ref={passwordRef} />
           <input placeholder="Username" type="text" ref={usernameRef} />
-          {/* @todo gender s elect */}
+          <input placeholder="Password" type="password" ref={passwordRef} />
           <input
             placeholder="Confirm Password"
             type="password"

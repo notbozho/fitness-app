@@ -18,13 +18,11 @@ export default function NavBar() {
   }
 
   useEffect(() => {
+    if (!user) return
+
     const a = getProfilePicture()
     setAvatar(a)
   }, [user])
-
-  useEffect(() => {
-    console.log(window.location.pathname)
-  }, [])
 
   return (
     <nav className="navbar">
@@ -35,8 +33,21 @@ export default function NavBar() {
       </a>
       <a href="/profile">
         <div className="navbar-right">
-          <span className="username">{user.username}</span>
-          <img src={avatar} alt="User Avatar" className="avatar" />
+          {!user ? (
+            <>
+              <a className="login" href="/login">
+                Login
+              </a>
+              <a className="register" href="/">
+                Register
+              </a>
+            </>
+          ) : (
+            <>
+              <span className="username">{user.username}</span>
+              <img src={avatar} alt="User Avatar" className="avatar" />
+            </>
+          )}
         </div>
       </a>
     </nav>
