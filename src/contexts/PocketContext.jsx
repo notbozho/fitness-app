@@ -130,7 +130,9 @@ export const PocketProvider = ({ children }) => {
         user,
         token,
         exercises,
+        setExercises,
         workouts,
+        setWorkouts,
         completedWorkouts,
         pb,
         API_URL

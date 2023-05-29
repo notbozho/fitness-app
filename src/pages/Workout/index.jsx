@@ -17,8 +17,10 @@ export default function Workout() {
 
   const {
     exercises,
+    setExercises,
     completedWorkouts,
     workouts,
+    setWorkouts,
     loadAllExercises,
     loadTemplate,
     finishTodayWorkout,
@@ -27,6 +29,10 @@ export default function Workout() {
   } = usePocket()
 
   useEffect(() => {
+    setExercises([])
+    setWorkouts([])
+    setFilteredExercises([])
+
     async function load() {
       await loadAllExercises()
       await loadTemplate(workout)

@@ -14,13 +14,22 @@ import { useNavigate } from 'react-router-dom'
 const MAX_PAST_WORKOUTS = 7
 
 export default function Homepage() {
-  const { user, completedWorkouts, loadCompletedWorkouts } = usePocket()
+  const {
+    user,
+    completedWorkouts,
+    loadCompletedWorkouts,
+    setExercises,
+    setWorkouts
+  } = usePocket()
 
   const [dates, setDates] = useState([])
 
   const navigate = useNavigate()
 
   useEffect(() => {
+    setExercises([])
+    setWorkouts([])
+
     loadCompletedWorkouts()
   }, [])
 
