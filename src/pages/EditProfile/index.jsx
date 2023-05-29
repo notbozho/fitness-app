@@ -16,13 +16,14 @@ export default function EditProfile() {
   const heightRef = useRef()
   const usernameRef = useRef()
   const emailRef = useRef()
+  const avatarInputRef = useRef()
 
-  const { logout, user, API_URL, reloadUserData, updateUser } = usePocket()
+  const { user, API_URL, reloadUserData, updateUser } = usePocket()
 
   const navigate = useNavigate()
 
   const [avatar, setAvatar] = useState(DEFAULT_MALE)
-  const [bmi, setBmi] = useState(0)
+  const [avatarUpdated, setAvatarUpdated] = useState(false)
 
   const getProfilePicture = () => {
     return user.avatar
@@ -53,7 +54,9 @@ export default function EditProfile() {
     }
 
     if (Object.keys(data).length === 0) {
-      toast.info('No changes made')
+      if (avatarUpdated) toast.success('Changes saved')
+      else toast.info('No changes made')
+
       navigate('/profile')
       return
     }
@@ -67,6 +70,33 @@ export default function EditProfile() {
     }
   }
 
+  const handleAvatarUpload = async (event) => {
+    const file = event.target.files[0]
+
+    if (!file || !isFileTypeValid(file)) {
+      toast.error('Invalid file type')
+      return
+    }
+
+    const formData = new FormData()
+    formData.append('avatar', file)
+
+    try {
+      await updateUser(formData)
+      toast.success('Avatar updated')
+      setAvatarUpdated(true)
+    } catch (err) {
+      toast.error(err.message)
+    }
+
+    await reloadUserData()
+  }
+
+  const isFileTypeValid = (file) => {
+    const acceptedFileTypes = ['image/png', 'image/jpeg', 'image/jpg']
+    return acceptedFileTypes.includes(file.type)
+  }
+
   useEffect(() => {
     const a = getProfilePicture()
     setAvatar(a)
@@ -76,19 +106,21 @@ export default function EditProfile() {
     reloadUserData()
   }, [])
 
-  useEffect(() => {
-    setBmi(calculateBMI(weightRef.current?.value, heightRef.current?.value))
-    console.log(bmi)
-  }, [weightRef, heightRef])
-
   return (
     <div className="editprofile-page">
       <h1 className="title">Edit Profile</h1>
       <div className="profile-container">
         <div className="general-container">
-          <div className="pen" onClick={() => navigate('/editprofile')}>
+          <div className="pen" onClick={() => avatarInputRef.current.click()}>
             <img src={avatar} alt="avatar" className="avatar" />
             <img src={PEN} alt="pen" className="icon" />
+            <input
+              type="file"
+              accept=".png, .jpg, .jpeg"
+              onChange={handleAvatarUpload}
+              style={{ display: 'none' }}
+              ref={avatarInputRef}
+            />
           </div>
           <h3 className="inputTitle">Username</h3>
           <input type="text" placeholder={user.username} ref={usernameRef} />
