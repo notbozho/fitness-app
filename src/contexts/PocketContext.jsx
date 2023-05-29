@@ -37,6 +37,11 @@ export const PocketProvider = ({ children }) => {
     setCompletedWorkouts(workouts)
   }
 
+  const updateUser = async (data) => {
+    await pb.collection('users').update(user.id, data)
+    await reloadUserData()
+  }
+
   const finishTodayWorkout = async (workout) => {
     if (!user) return
 
@@ -121,6 +126,7 @@ export const PocketProvider = ({ children }) => {
         finishTodayWorkout,
         loadCompletedWorkouts,
         reloadUserData,
+        updateUser,
         user,
         token,
         exercises,

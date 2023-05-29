@@ -15,6 +15,8 @@ import 'react-toastify/dist/ReactToastify.css'
 import NavBar from './components/NavBar'
 import EditProfile from './pages/EditProfile'
 
+import '@fontsource/inter'
+
 export default function App() {
   return (
     <PocketProvider>

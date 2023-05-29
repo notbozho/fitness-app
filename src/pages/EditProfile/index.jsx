@@ -14,15 +14,10 @@ import { useNavigate } from 'react-router-dom'
 export default function EditProfile() {
   const weightRef = useRef()
   const heightRef = useRef()
+  const usernameRef = useRef()
+  const emailRef = useRef()
 
-  const {
-    logout,
-    user,
-    loadCompletedWorkouts,
-    API_URL,
-    reloadUserData,
-    completedWorkouts
-  } = usePocket()
+  const { logout, user, API_URL, reloadUserData, updateUser } = usePocket()
 
   const navigate = useNavigate()
 
@@ -38,13 +33,46 @@ export default function EditProfile() {
   // @todo FIX state for bmi
   // @todo update user in db
 
+  const handleSave = async () => {
+    const data = {}
+    // mnogo if-ove, tui kato data ne trqbva da ima undefined property-ta.
+    if (heightRef.current?.value) {
+      data.height = heightRef.current.value
+    }
+
+    if (weightRef.current?.value) {
+      data.weight = weightRef.current.value
+    }
+
+    if (usernameRef.current?.value) {
+      data.username = usernameRef.current.value
+    }
+
+    if (emailRef.current?.value) {
+      data.email = emailRef.current.value
+    }
+
+    if (Object.keys(data).length === 0) {
+      toast.info('No changes made')
+      navigate('/profile')
+      return
+    }
+
+    try {
+      await updateUser(data)
+      toast.success('Changes saved')
+      navigate('/profile')
+    } catch (err) {
+      toast.error(err.message)
+    }
+  }
+
   useEffect(() => {
     const a = getProfilePicture()
     setAvatar(a)
   }, [user])
 
   useEffect(() => {
-    loadCompletedWorkouts()
     reloadUserData()
   }, [])
 
@@ -63,9 +91,9 @@ export default function EditProfile() {
             <img src={PEN} alt="pen" className="icon" />
           </div>
           <h3 className="inputTitle">Username</h3>
-          <input type="text" placeholder={user.username} />
+          <input type="text" placeholder={user.username} ref={usernameRef} />
           <h3 className="inputTitle">Email</h3>
-          <input type="text" placeholder={user.email} />
+          <input type="text" placeholder={user.email} ref={emailRef} />
         </div>
         <div className="metrics">
           <div className="metric">
@@ -86,20 +114,9 @@ export default function EditProfile() {
             />{' '}
             <p>kg</p>
           </div>
-          <div className="metric">
-            <h3>BMI</h3>
-            <p>{bmi}</p>
-          </div>
         </div>
         <div className="buttons">
-          <button
-            onClick={() => {
-              logout()
-              toast.success('Changes saved')
-            }}
-          >
-            Save
-          </button>
+          <button onClick={handleSave}>Save</button>
         </div>
       </div>
     </div>

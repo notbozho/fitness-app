@@ -63,11 +63,21 @@
 }
 
 .editprofile-page .metric input {
-  max-width: 35%;
+  max-width: 40%;
   margin-top: 5px;
   border-radius: 12px;
   padding: 2px 5px 2px 5px;
   border: solid 1px #f05454;
+}
+
+.editprofile-page .metric input::-webkit-outer-spin-button,
+.editprofile-page .metric input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+/* firefox support */
+.editprofile-page .metric input[type='number'] {
+  -moz-appearance: textfield;
 }
 
 .editprofile-page .metric input:focus {
